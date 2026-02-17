@@ -1,0 +1,10 @@
+let fruits = ["Apple"];
+console.log(fruits);
+fruits.push("Mango");
+console.log(fruits);
+fruits.unshift("Banana");
+console.log(fruits);
+fruits.splice(1, 0, "Orange");
+console.log(fruits);
+fruits[3] = "Grapes";
+console.log(fruits);
