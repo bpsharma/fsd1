@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive SVG Drawing Tool</title>
+<style>
+  body {
+	 text-align:center;
+	}
+  svg {
+    border: 1px solid red;
+    cursor: crosshair;
+  }
+
+</style>
+</head>
+<body>
+<h2>Interactive SVG Drawing Tool</h2>
+
+<svg id="d" width="600" height="400"></svg>
+
+<script>
+  const svg = document.getElementById('d');
+  let isDrawing = false;
+  let currentPath;
+
+  // Convert screen coordinages to SVG Coordinates
+  function getSVGPoint(event) {
+    const point = svg.createSVGPoint();
+    point.x=event.clientX;
+    point.y=event.clientY;
+    // Convert Current Transformation Matrix to SVG
+    return point.matrixTransform(svg.getScreenCTM().inverse());
+  }
+
+
+  svg.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    const { x, y } = getSVGPoint(e);
+
+    // Create a new path element for the line
+    currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    currentPath.setAttribute('stroke', 'blue');
+    currentPath.setAttribute('stroke-width', '2');
+    currentPath.setAttribute('fill', 'none');
+    currentPath.setAttribute('d', `M ${x} ${y}`);
+
+    svg.appendChild(currentPath);
+  });
+
+  svg.addEventListener('mousemove', (e) => {
+    if (!isDrawing) return;
+
+    const { x, y } = getSVGPoint(e);
+
+    // Append the new point to the path's d attribute
+    const d = currentPath.getAttribute('d');
+    currentPath.setAttribute('d', `${d} L ${x} ${y}`);
+  });
+
+  // Stop drawing on mouseup or mouseleave
+  function stopDrawing() {
+    isDrawing = false;
+  }
+
+  svg.addEventListener('mouseup', stopDrawing);
+  svg.addEventListener('mouseleave', stopDrawing);
+</script>
+</body>
+</html>
