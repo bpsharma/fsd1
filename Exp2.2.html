@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FSD Experiment 2.2</title>
+  <style>
+    p {border: 1px solid black;border-radius: 5px;padding:10px;}
+  </style>
+</head>
+<body>
+  <h2>Product List</h2>
+  <label>Filter Items by Category:</label>
+  <select id="category" onchange="showSelected()">
+    <option value="All">All</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Books">Books</option>
+  </select>
+
+  <div id="productList"></div>
+
+  <script>
+    // Adding few sample products
+    const products = [
+      { itemName: "T-Shirt", category: "Clothing" },
+      { itemName: "Jeans", category: "Clothing" },
+      { itemName: "Headphones", category: "Electronics" },
+      { itemName: "Smartphone", category: "Electronics" },
+      { itemName: "Novel", category: "Books" },
+      { itemName: "Cookbook", category: "Books" }
+    ];
+
+    function showAll(){
+      const productList = document.getElementById("productList");
+      productList.innerHTML = ""; 
+
+      products.forEach(product => {
+        const p = document.createElement("p");
+        p.textContent = product.itemName;
+        productList.appendChild(p);
+      });
+
+    }
+    function showSelected() {
+      const productList = document.getElementById("productList");
+      productList.innerHTML = ""; 
+      const category=document.getElementById("category").value;
+
+      if ( category=== "All") {
+        showAll();
+      } else {
+        const filtered = products.filter(p => p.category === category);
+        filtered.forEach(product => {
+            const p = document.createElement("p");
+            p.textContent = product.itemName;
+            productList.appendChild(p);
+        });
+      }      
+    }
+
+    //loading all items on form load
+    showAll();
+  </script>
+
+</body>
+</html>
